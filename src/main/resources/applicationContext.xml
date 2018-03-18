@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:repository="http://www.springframework.org/schema/data/repository"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+		default-lazy-init="false">
+    <!-- 属性文件位置 -->
+    <bean id="annotationPropertyConfigurer"
+        class="com.sxkl.knowledge.utils.CustomizedPropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:init.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
+    <context:component-scan base-package="com.sxkl.knowledge"><!-- base-package 如果多个，用“,”分隔 -->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+             <property name="maxIdle" value="${redis.maxIdle}" />
+             <property name="testOnBorrow" value="true" />
+    </bean>
+    <bean id="connectionFactory"
+           class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.ip}"
+          p:port="${redis.port}"
+          p:password="${redis.password}"
+          p:pool-config-ref="poolConfig" />
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+         <property name="connectionFactory" ref="connectionFactory" />
+         <property name="keySerializer">
+         	<bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	     </property>
+	     <property name="valueSerializer">
+	         <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
+	     </property>
+	     <property name="hashKeySerializer">
+	         <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+	     </property>
+	     <property name="hashValueSerializer">
+	         <bean class="com.sxkl.knowledge.utils.GenericJackson2JsonRedisSerializer"/>
+	     </property>
+    </bean>
+       
+    <cache:annotation-driven cache-manager="cacheManager"/>
+   
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"> 
+       <constructor-arg ref="redisTemplate" /> 
+    </bean>
+
+	<!-- 慢SQL记录 -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter"> <!-- 慢sql时间设置,即执行时间大于200毫秒的都是慢sql -->
+		<property name="slowSqlMillis" value="200" />
+		<property name="logSlowSql" value="true" />
+	</bean>
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<property name="dataSourceLogEnabled" value="true" />
+		<property name="statementExecutableSqlLogEnable" value="true" />
+	</bean>
+    
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    	<property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="filters" value="wall" />
+        <property name="initialSize" value="2" />
+        <property name="minIdle" value="2" />
+        <property name="maxActive" value="200" />
+        <property name="maxWait" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="select 1 from dual" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxOpenPreparedStatements" value="100" />
+        <property name="proxyFilters"> 
+        	<list> 
+        		<ref bean="stat-filter"/> 
+        		<ref bean="log-filter"/> 
+        	</list> 
+        </property>
+    </bean>
+    <!-- <bean id="dynamicDataSource" class="com.sxkl.knowledge.datasource.DynamicDataSource">  
+       <property name="targetDataSources">  
+           <map key-type="java.lang.String">
+               指定lookupKey和与之对应的数据源
+               <entry key="defaultDataSource" value-ref="dataSource"></entry>  
+               <entry key="cvmDataSource" value-ref="cvmDataSource"></entry>  
+           </map>  
+       </property>  
+       这里可以指定默认的数据源
+       <property name="defaultTargetDataSource" ref="dataSource" />  
+    </bean> -->
+    <!-- <bean id="dataSourceAspect" class="com.sxkl.knowledge.datasource.DataSourceAspect"/>
+    <aop:config>
+       <aop:aspect ref="dataSourceAspect">
+            拦截所有service方法
+            <aop:pointcut id="dataSourcePointcut" expression="execution(* com.sxkl.knowledge.*.service.*.*(..))"/>
+            <aop:before pointcut-ref="dataSourcePointcut" method="intercept" />
+        </aop:aspect>
+    </aop:config> -->
+    
+    <!-- 配置hibernate的SessionFactory -->
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!-- 注入数据源 相关信息看源码 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- hibernate配置信息 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <!-- <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
+                <!-- 开启二级缓存 ehcache -->
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">${hibernate.cache.provider_configuration_file_resource_path}</prop>
+                <prop key="hibernate.connection.release_mode">after_transaction</prop> 
+            </props>
+        </property>
+        <!-- 扫描hibernate注解配置的entity -->
+        <property name="packagesToScan" value="com.sxkl.knowledge.*.entity" />
+    </bean>
+    
+    <bean id="hibernateDaoSupport"  
+        class="org.springframework.orm.hibernate5.support.HibernateDaoSupport"  
+        abstract="true">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean> 
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <!-- 配置事务增强处理Bean，指定事务管理器 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <!-- 配置详细事务处理语义 -->
+        <tx:attributes>
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="load*" propagation="SUPPORTS" read-only="true" />
+            <!-- 其他采用默认事务方式 -->
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice>
+    <!-- Spring aop事务管理 -->
+    <aop:config>
+        <!-- 配置切入点 -->
+        <aop:pointcut id="transactionPointcut"
+            expression="execution(* com.sxkl.knowledge.*.service.*.*(..))"  />
+        <!-- 指定在txAdvice切入点应用txAdvice事务增强处理 -->
+        <aop:advisor pointcut-ref="transactionPointcut"    advice-ref="transactionAdvice" />
+    </aop:config>
+    
+    <aop:config proxy-target-class="true" expose-proxy="true"></aop:config>
+    <aop:aspectj-autoproxy/>
+    
+    <!-- 事件驱动编程 -->
+    <bean id="coreTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+         <property name="corePoolSize" value="10" />
+         <property name="maxPoolSize" value="20" />
+         <property name="queueCapacity" value="25" />
+         <property name="threadNamePrefix" value="cis" />
+     </bean>
+     
+    <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster"> 
+        <!-- 注入任务执行器 这样就实现了异步调用（缺点是全局的，要么全部异步，要么全部同步（删除这个属性即是同步））  --> 
+        <property name="taskExecutor" ref="coreTaskExecutor"/> 
+    </bean>
+    
+    <task:annotation-driven executor="coreTaskExecutor"/>
+    
+    <bean id="druid-stat-interceptor"
+		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+	</bean>
+	<bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+		scope="prototype">
+		<property name="patterns">
+			<list>
+				<value>com.sxkl.knowledge.*.service.*</value>
+				<value>com.sxkl.knowledge.*.dao.*</value>
+			</list>
+		</property>
+	</bean>
+
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+	</aop:config>
+</beans>
