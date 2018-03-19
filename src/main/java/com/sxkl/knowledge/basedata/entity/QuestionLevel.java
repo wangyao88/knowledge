@@ -16,7 +16,7 @@ import lombok.Data;
  * @description: 难易等级
  */
 @Entity
-@Table(name="kg_question_level")
+@Table(name = "kg_question_level")
 @GenericGenerator(name = "uuid", strategy = "uuid")
 @Data
 public class QuestionLevel {

@@ -16,16 +16,16 @@ import lombok.Data;
  * @description: 题型
  */
 @Entity
-@Table(name="kg_question_type")
+@Table(name = "kg_question_type")
 @GenericGenerator(name = "uuid", strategy = "uuid")
 @Data
 public class QuestionType {
 
 	@Id
 	@GeneratedValue(generator = "uuid")
-	@Column(name="id",unique=true,nullable=false)
+	@Column(name = "id", unique = true, nullable = false)
 	private String id;
-	
-	@Column(name="name",unique=true,nullable=false)
+
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 }

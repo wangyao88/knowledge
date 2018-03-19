@@ -16,19 +16,19 @@ import lombok.Data;
  * @description: 分值
  */
 @Entity
-@Table(name="kg_question_score")
+@Table(name = "kg_question_score")
 @GenericGenerator(name = "uuid", strategy = "uuid")
 @Data
 public class QuestionScore {
 
 	@Id
 	@GeneratedValue(generator = "uuid")
-	@Column(name="id",unique=true,nullable=false)
+	@Column(name = "id", unique = true, nullable = false)
 	private String id;
-	
-	@Column(name="name",unique=true,nullable=false)
+
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
-	
-	@Column(name="score",unique=true,nullable=false)
-	private double score;
+
+	@Column(name = "score", unique = true, nullable = false)
+	private int score;
 }
