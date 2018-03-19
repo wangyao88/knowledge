@@ -87,6 +87,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </li>
                             <li><a href="tables.html"><i class="en-arrow-right7"></i>难度等级管理</a>
                             </li>
+                            <li><a href="icons.html"><i class="im-stack"></i>问题分类管理</a>
+                            </li>
+                            <li><a href="list.html"><i class="fa-list"></i>玩家等级管理</a>
+                            </li>
                         </ul>
                     </li>
                     <li><a href="#">问题管理<i class="im-table2"></i></a>
@@ -97,11 +101,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </li>
                         </ul>
                     </li>
-                    <li><a href="#">题库管理<i class="st-lab"></i></a>
+                    <li><a href="#">试卷管理<i class="st-lab"></i></a>
                         <ul class="nav sub">
-                            <li><a href="panels.html"><i class="br-window"></i>题库列表</a>
+                            <li><a href="panels.html"><i class="br-window"></i>试卷列表</a>
                             </li>
-                            <li><a href="tiles.html"><i class="im-windows8"></i>题库生成</a>
+                            <li><a href="tiles.html"><i class="im-windows8"></i>试卷生成</a>
                             </li>
                         </ul>
                     </li>
