@@ -146,22 +146,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <ul class="server-stats">
                             <li>
                                 <span class="txt">磁盘使用率</span>
-                                <span class="percent">78</span>
-                                <div class="pie-chart" data-percent="78"></div>
+                                <span id="disk_text" class="percent">78</span>
+                                <div id="disk_chart" class="pie-chart" data-percent="78"></div>
                             </li>
                         </ul>
                         <ul class="server-stats">
                             <li>
                                 <span class="txt">CPU使用率</span>
-                                <span class="percent">56</span>
-                                <div class="pie-chart" data-percent="56"></div>
+                                <span id="cpu_text" class="percent">56</span>
+                                <div id="cpu_chart" class="pie-chart" data-percent="56"></div>
                             </li>
                         </ul>
                         <ul class="server-stats">
                             <li>
                                 <span class="txt">内存使用率</span>
-                                <span class="percent">14</span>
-                                <div class="pie-chart" data-percent="14"></div>
+                                <span id="memery_text" class="percent">14</span>
+                                <div id="memery_chart" class="pie-chart" data-percent="14"></div>
                             </li>
                         </ul>
                     </div>
@@ -376,5 +376,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <script src="<%=basePath%>assets/main/js/jquery.sprFlat.js"></script>
         <script src="<%=basePath%>assets/main/js/app.js"></script>
         <script src="<%=basePath%>assets/main/js/pages/dashboard.js"></script>
+        <script type="text/javascript">
+	        var basePath = "<%=basePath%>";
+	    </script>
+	    <script src="<%=basePath%>assets/main/js/main.js"></script>
     </body>
 </html>
