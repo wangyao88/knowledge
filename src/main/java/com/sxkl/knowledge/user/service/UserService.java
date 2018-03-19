@@ -40,8 +40,8 @@ public class UserService extends BaseService<String, User>{
 		ModelAndView mv = new ModelAndView();
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-//        byte[] decodedData = RSACoder.decryptByPrivateKey(password,RsaKeyManager.getPrivateKey());
-//        password = new String(decodedData);
+        byte[] decodedData = RSACoder.decryptByPrivateKey(password,RsaKeyManager.getPrivateKey());
+        password = new String(decodedData);
         if(chackeLoginParams(userName,password)){
         	User user = validateLogin(userName,password);
         	if(user != null){
@@ -65,7 +65,6 @@ public class UserService extends BaseService<String, User>{
 	
 	public void logout(HttpServletRequest request){
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute(Constants.USER_IN_SESSION_KEY);
         session.invalidate();
 	}
 

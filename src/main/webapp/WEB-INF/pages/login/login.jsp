@@ -19,15 +19,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
     <link href="<%=basePath%>assets/login/css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=basePath%>assets/common/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>assets/login/js/login.js"></script>
-
+    <script type="text/javascript" src="<%=basePath%>assets/common/js/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+        var basePath = "<%=basePath%>";
+    </script>
   </head>
   
   <body>
 
 <div class="videozz"></div>
-	<video  autoplay muted loop poster="<%=basePath%>assets/login/images/fallba1ck.jpg">
-		<source src="<%=basePath%>assets/login/images/mov.mp4">		
+	<video  autoplay muted loop>
 		你的游览器不支持video支持
 	</video>
     
@@ -35,15 +36,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div class="box-a">
     <div class="m-2">
           <div class="m-2-1">
-            <form action="<%=basePath%>login" method="post">
+            <form>
                 <div class="m-2-2">
-                   <input name="userName" type="text" placeholder="请输入账号" />
+                   <input name="userName" id="userName" type="text" placeholder="请输入账号" value="wy"/>
                 </div>
                 <div class="m-2-2">
-                   <input name="password" type="password" placeholder="请输入密码"/>
+                   <input name="password" id="password" type="password" placeholder="请输入密码" value="qwe123=="/>
                 </div>
                 <div class="m-2-2">
-                   <button type="submit" value="登陆" /> 登陆
+                   <button id="submitBtn" type="button" value="登陆" /> 登陆
                 </div>
             </form>
           </div>
@@ -103,6 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="m-24" id="localtime"></div>
     </div>
 </div>
+<script type="text/javascript" src="<%=basePath%>assets/login/js/login.js"></script>
 <script src="<%=basePath%>assets/login/js/common.min.js"></script>
 </body>
 </html>
