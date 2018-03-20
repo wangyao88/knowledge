@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="navbar">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="index.html">
-                            <i class="im-windows8 text-logo-element animated bounceIn"></i><span class="text-logo">来答题吧</span>
+                            <i class="im-windows8 text-logo-element animated bounceIn"></i><span class="text-logo"><!-- 来答题吧 --></span>
                         </a>
                     </div>
                 </div>
@@ -79,9 +79,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <li><a href="index.html">首页 <i class="im-screen"></i></a>
                     </li>
                     <li>
-                        <a href="#">基础数据维护 <i class="im-paragraph-justify"></i></a>
-                        <ul class="nav sub">
-                            <li><a href="forms.html"><i class="ec-pencil2"></i>题型管理</a>
+                        <a href="<%=basePath%>basedata/index" target="content">基础数据维护 <i class="im-paragraph-justify"></i></a>
+                        <%-- <ul class="nav sub">
+                            <li><a href="<%=basePath%>basedata/index" target="content"><i class="ec-pencil2"></i>题型管理</a>
                             </li>
                             <li><a href="form-validation.html"><i class="im-checkbox-checked"></i>分值管理</a>
                             </li>
@@ -91,7 +91,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </li>
                             <li><a href="list.html"><i class="fa-list"></i>玩家等级管理</a>
                             </li>
-                        </ul>
+                        </ul> --%>
                     </li>
                     <li><a href="#">问题管理<i class="im-table2"></i></a>
                         <ul class="nav sub">
@@ -175,155 +175,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <!-- End .sidebar-inner -->
         </div>
         <!-- End #sidebar -->
-        <!-- Start #right-sidebar -->
-        <div id="right-sidebar" class="hide-sidebar">
-            <!-- Start .sidebar-inner -->
-            <div class="sidebar-inner">
-                <div class="sidebar-panel mt0">
-                    <div class="sidebar-panel-content fullwidth pt0">
-                        <div class="chat-user-list">
-                            <form class="form-horizontal chat-search" role="form">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search for user...">
-                                    <button type="submit"><i class="ec-search s16"></i>
-                                    </button>
-                                </div>
-                                <!-- End .form-group  -->
-                            </form>
-                            <ul class="chat-ui bsAccordion">
-                                <li>
-                                    <a href="#">Favorites <span class="notification teal">4</span><i class="en-arrow-down5"></i></a>
-                                    <ul class="in">
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/49.jpg" alt="@chadengle">Chad Engle
-                                                <span class="has-message"><i class="im-pencil"></i></span>
-                                            </a>
-                                            <span class="status online"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/54.jpg" alt="@alagoon">Anthony Lagoon</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/52.jpg" alt="@koridhandy">Kory Handy</a>
-                                            <span class="status"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/50.jpg" alt="@divya">Divia Manyan</a>
-                                            <span class="status"><i class="en-dot"></i></span>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Online <span class="notification green">3</span><i class="en-arrow-down5"></i></a>
-                                    <ul class="in">
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/51.jpg" alt="@kolage">Eric Hofman</a>
-                                            <span class="status online"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/55.jpg" alt="@mikebeecham">Mike Beecham</a>
-                                            <span class="status online"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/53.jpg" alt="@derekebradley">Darek Bradly</a>
-                                            <span class="status online"><i class="en-dot"></i></span>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Offline <span class="notification red">5</span><i class="en-arrow-down5"></i></a>
-                                    <ul>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/56.jpg" alt="@laurengray">Lauren Grey</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/49.jpg" alt="@chadengle">Chad Engle</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/58.jpg" alt="@frankiefreesbie">Frankie Freesibie</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/57.jpg" alt="@joannefournier">Joane Fornier</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="chat-name">
-                                                <img class="chat-avatar" src="<%=basePath%>assets/main/img/avatars/59.jpg" alt="@aiiaiiaii">Alia Alien</a>
-                                            <span class="status offline"><i class="en-dot"></i></span>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="chat-box">
-                            <h5>Chad Engle</h5>
-                            <a id="close-user-chat" href="#" class="btn btn-xs btn-primary"><i class="en-arrow-left4"></i></a>
-                            <ul class="chat-ui chat-messages">
-                                <li class="chat-user">
-                                    <p class="avatar">
-                                        <img src="<%=basePath%>assets/main/img/avatars/49.jpg" alt="@chadengle">
-                                    </p>
-                                    <p class="chat-name">Chad Engle <span class="chat-time">15 seconds ago</span>
-                                    </p>
-                                    <span class="status online"><i class="en-dot"></i></span>
-                                    <p class="chat-txt">Hello Sugge check out the last order.</p>
-                                </li>
-                                <li class="chat-me">
-                                    <p class="avatar">
-                                        <img src="<%=basePath%>assets/main/img/avatars/48.jpg" alt="SuggeElson">
-                                    </p>
-                                    <p class="chat-name">SuggeElson <span class="chat-time">10 seconds ago</span>
-                                    </p>
-                                    <span class="status online"><i class="en-dot"></i></span>
-                                    <p class="chat-txt">Ok i will check it out.</p>
-                                </li>
-                                <li class="chat-user">
-                                    <p class="avatar">
-                                        <img src="<%=basePath%>assets/main/img/avatars/49.jpg" alt="@chadengle">
-                                    </p>
-                                    <p class="chat-name">Chad Engle <span class="chat-time">now</span>
-                                    </p>
-                                    <span class="status online"><i class="en-dot"></i></span>
-                                    <p class="chat-txt">Thank you, have a nice day</p>
-                                </li>
-                            </ul>
-                            <div class="chat-write">
-                                <form action="#" class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                        <textarea name="sendmsg" id="sendMsg" class="form-control elastic" rows="1"></textarea>
-                                        <a role="button" class="btn" id="attach_photo_btn">
-                                            <i class="fa-picture s20"></i> 
-                                        </a>
-                                        <input type="file" name="attach_photo" id="attach_photo">
-                                    </div>
-                                    <!-- End .form-group  -->
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End .sidebar-inner -->
-        </div>
-        <!-- End #right-sidebar -->
         <!-- Start #content -->
-        <div id="content">
-            <!-- Start .content-wrapper -->
+        <div id="content" style="margin-top: 0px;">
+            <iframe id="myFrameId" name="content" scrolling="yes" frameborder="0" width="100%" height="800px"></iframe>
         </div>
         <!-- End #content -->
         <!-- Javascripts -->

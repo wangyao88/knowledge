@@ -81,10 +81,13 @@ public class SysInfoService {
 		double used = 0.0;
 		Sigar sigar = new Sigar();
 		Mem mem = sigar.getMem();
-		Swap swap = sigar.getSwap();
+//		Swap swap = sigar.getSwap();
+//		
+//		total += mem.getTotal() + swap.getTotal();
+//		used += mem.getUsed() + swap.getUsed();
 		
-		total += mem.getTotal() + swap.getTotal();
-		used += mem.getUsed() + swap.getUsed();
+		total += mem.getTotal();
+		used += mem.getUsed();
 		return (int)((used/total)*100);
 	}
 }

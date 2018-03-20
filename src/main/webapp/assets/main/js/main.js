@@ -15,7 +15,13 @@ function getCurrentSysInfo(){
 	});
 }
 
+function resetHeight(){
+	var height = $(document.body).height() - 80;
+	$("#myFrameId").height(height);
+}
+
 $(document).ready(function(){
 	window.setTimeout(getCurrentSysInfo, 2000)
 	window.setInterval(getCurrentSysInfo, 10000);
+	resetHeight();
 });
